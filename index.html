@@ -56,6 +56,14 @@
     const container = document.getElementById("checkboxContainer");
     const states = loadStates();
 
+    const updateTotal = () => {
+        const states = loadStates();
+        const total = Object.keys(states)
+          .filter((key) => states[key])
+          .reduce((sum, key) => sum + parseInt(key.split("-")[1]), 0);
+        document.querySelector(".total").textContent = `Total: R$ ${total},00`;
+      };
+
     for (let i = 1; i <= totalDays; i++) {
       const checkboxId = `day-${i}`;
 
@@ -71,11 +79,15 @@
           Toast.createToast(
             `$ Dia ${i} marcado com sucesso! Mais um dia! Parabéns`,
             "#2ecc71"
-          );
+          )
+          updateTotal();
         } else {
           Toast.createToast(`$ Dia ${i} desmarcado!`, "#c52929");
+          updateTotal();
         }
-      });
+      });    
+
+      updateTotal();
 
       const checkMark = document.createElement("div");
       checkMark.className = "checkmark";
