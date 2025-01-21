@@ -66,9 +66,9 @@ h1{
   /* Create a custom checkbox */
   .checkmark {
     --clr: #0B6E4F;
-    position: relative;
-    top: -65px;
-    left: -45px;
+    position: absolute;
+    top: 5px;
+    left: 8px;
     height: 1.3em;
     width: 1.3em;
     background-color: #ccc;
@@ -218,10 +218,6 @@ body.dark h1{
         height: 250px;
     }
 
-    .checkmark{
-        top: -110px;
-        left: -48px;
-    }
 
     .container{
         font-size: 2rem;
