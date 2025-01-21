@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="darkBox" onchange="darkToggleEvent()">
+        <input type="checkbox" class="darkCheckbox" id="chk" />
+        <label class="label" for="chk">
+          <i class="fa-solid fa-sun"></i>
+          <i class="fa-solid fa-moon"></i>
+          <div class="ball"></div>
+        </label>
+      </div>
+    </nav>
+    <section>
+      <h1>Juntando dindin, cascalho, bufunfa, faz-me rir</h1>
+      <p class="total"></p>
+      <div class="checkbox-container dark" id="checkboxContainer"></div>
+    </section>
+  </body>
+</html>
+
+<script>
+  const totalDays = 200;
+
+  const loadStates = () => {
+    const savedStates = localStorage.getItem("checkboxStates");
+    return savedStates ? JSON.parse(savedStates) : {};
+  };
+
+  const saveStates = (states) => {
+    localStorage.setItem("checkboxStates", JSON.stringify(states));
+  };
+
+  const updateCheckedCount = (states) => {
+    const count = Object.values(states).filter(Boolean).length;
+    document.getElementsByClassName(
+      "total"
+    ).textContent = `Total checked: ${count}`;
+  };
+
+  const createCheckboxes = () => {
+    const container = document.getElementById("checkboxContainer");
+    const states = loadStates();
+
+    for (let i = 1; i <= totalDays; i++) {
+      const checkboxId = `day-${i}`;
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = checkboxId;
+      checkbox.checked = states[checkboxId] || false;
+
+      checkbox.addEventListener("change", () => {
+        states[checkboxId] = checkbox.checked;
+        saveStates(states);
+        if (checkbox.checked) {
+          Toast.createToast(
+            `$ Dia ${i} desmarcado com sucesso! Mais um dia! Parabéns`,
+            "#2ecc71"
+          );
+        } else {
+          Toast.createToast(`$ Dia ${i} desmarcado!`, "#c52929");
+        }
+      });
+
+      const checkMark = document.createElement("div");
+      checkMark.className = "checkmark";
+
+      const label = document.createElement("label");
+      label.htmlFor = checkboxId;
+      label.className = "container";
+      label.textContent = `${i}`;
+      label.appendChild(checkbox);
+      label.appendChild(checkMark);
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "checkbox-item";
+      wrapper.appendChild(label);
+
+      container.appendChild(wrapper);
+    }
+  };
+
+  class Toast {
+    static createToast(text, color) {
+      Toastify({
+        text: text,
+        duration: 2000,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        width: "200",
+        style: {
+          background: color,
+        },
+      }).showToast();
+    }
+  }
+
+  function darkToggleEvent() {
+    const chk = document.getElementById("chk");
+    const darkMode = localStorage.getItem("darkMode");
+
+    // Restore the dark mode state on page load
+    if (darkMode === "enabled") {
+      document.body.classList.add("dark");
+      chk.checked = true;
+    }
+
+    // Toggle dark mode and save state
+    chk.addEventListener("change", () => {
+      if (chk.checked) {
+        document.body.classList.add("dark");
+        localStorage.setItem("darkMode", "enabled");
+      } else {
+        document.body.classList.remove("dark");
+        localStorage.setItem("darkMode", "disabled");
+      }
+    });
+  }
+
+  // Call the function to set the initial state
+  darkToggleEvent();
+
+  createCheckboxes();
+</script>
+
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/toastify-js"
+></script>
+<script
+  src="https://kit.fontawesome.com/5f9c487d12.js"
+  crossorigin="anonymous"
+></script>
