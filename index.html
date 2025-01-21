@@ -52,13 +52,6 @@
     localStorage.setItem("checkboxStates", JSON.stringify(states));
   };
 
-  const updateCheckedCount = (states) => {
-    const count = Object.values(states).filter(Boolean).length;
-    document.getElementsByClassName(
-      "total"
-    ).textContent = `Total checked: ${count}`;
-  };
-
   const createCheckboxes = () => {
     const container = document.getElementById("checkboxContainer");
     const states = loadStates();
@@ -76,7 +69,7 @@
         saveStates(states);
         if (checkbox.checked) {
           Toast.createToast(
-            `$ Dia ${i} desmarcado com sucesso! Mais um dia! Parabéns`,
+            `$ Dia ${i} marcado com sucesso! Mais um dia! Parabéns`,
             "#2ecc71"
           );
         } else {
@@ -90,7 +83,7 @@
       const label = document.createElement("label");
       label.htmlFor = checkboxId;
       label.className = "container";
-      label.textContent = `${i}`;
+      label.textContent = `R$ ${i}, 00`;
       label.appendChild(checkbox);
       label.appendChild(checkMark);
 
